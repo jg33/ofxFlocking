@@ -30,15 +30,15 @@ Boid::Boid(int x, int y) {
 
 // Method to update location
 void Boid::update(vector<Boid> &boids) {
-	
+
 	flock(boids);
-	
+
     vel += acc;   // Update velocity
     vel.x = ofClamp(vel.x, -maxspeed, maxspeed);  // Limit speed
 	vel.y = ofClamp(vel.y, -maxspeed, maxspeed);  // Limit speed
     loc += vel;
     acc = 0;  // Reset accelertion to 0 each cycle
-	
+
 	if (loc.x < -r) loc.x = ofGetWidth()+r;
     if (loc.y < -r) loc.y = ofGetHeight()+r;
 
@@ -63,13 +63,13 @@ void Boid::arrive(ofxVec2f target) {
 ofxVec2f Boid::steer(ofxVec2f target, bool slowdown) {
     ofxVec2f steer;  // The steering vector
     ofxVec2f desired = target - loc;  // A vector pointing from the location to the target
-    
+
 	float d = ofDist(target.x, target.y, loc.x, loc.y); // Distance from the target is the magnitude of the vector
-	
-	
+
+
 	// If the distance is greater than 0, calc steering (otherwise return zero vector)
     if (d > 0) {
-		
+
 		desired /= d; // Normalize desired
 		// Two options for desired vector magnitude (1 -- based on distance, 2 -- maxspeed)
 		if ((slowdown) && (d < 100.0f)) {
@@ -80,8 +80,8 @@ ofxVec2f Boid::steer(ofxVec2f target, bool slowdown) {
 		// Steering = Desired minus Velocity
 		steer = desired - vel;
 		steer.x = ofClamp(steer.x, -maxforce, maxforce); // Limit to maximum steering force
-		steer.y = ofClamp(steer.y, -maxforce, maxforce); 
-		
+		steer.y = ofClamp(steer.y, -maxforce, maxforce);
+
     }
     return steer;
 }
@@ -91,7 +91,7 @@ void Boid::draw() {
 	float angle = (float)atan2(-vel.y, vel.x);
     float theta =  -1.0*angle;
 	float heading2D = ofRadToDeg(theta)+90;
-	
+
 	ofPushStyle();
     ofFill();
     ofPushMatrix();
@@ -101,7 +101,7 @@ void Boid::draw() {
     ofVertex(0, -r*2);
     ofVertex(-r, r*2);
     ofVertex(r, r*2);
-    ofEndShape(true);	
+    ofEndShape(true);
     ofPopMatrix();
 	ofPopStyle();
 }
@@ -110,12 +110,12 @@ void Boid::flock(vector<Boid> &boids) {
 	ofxVec2f sep = separate(boids);
 	ofxVec2f ali = align(boids);
 	ofxVec2f coh = cohesion(boids);
-	
+
 	// Arbitrarily weight these forces
 	sep *= 1.5;
 	ali *= 1.0;
 	coh *= 1.0;
-	
+
 	acc += sep + ali + coh;
 }
 
@@ -124,8 +124,7 @@ void Boid::flock(vector<Boid> &boids) {
  */
 bool Boid::isHit(int x, int y, int radius) {
     int r = 1;
-    int range = 50;//calculation error range
-    int dist =r + radius - range;
+    int dist =r + radius;
     if(pow((x-loc.x),2)+pow((y-loc.y),2) < dist * dist) {
         return true;
     }
@@ -138,13 +137,13 @@ ofxVec2f Boid::separate(vector<Boid> &boids) {
     float desiredseparation = 25.0f;
     ofxVec2f steer;
     int count = 0;
-	
+
     // For every boid in the system, check if it's too close
     for (int i = 0 ; i < boids.size(); i++) {
 		Boid &other = boids[i];
-		
+
 		float d = ofDist(loc.x, loc.y, other.loc.x, other.loc.y);
-		
+
 		// If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
 		if ((d > 0) && (d < desiredseparation)) {
 			// Calculate vector pointing away from neighbor
@@ -159,11 +158,11 @@ ofxVec2f Boid::separate(vector<Boid> &boids) {
     if (count > 0) {
 		steer /= (float)count;
     }
-	
-	
+
+
     // As long as the vector is greater than 0
 	//float mag = sqrt(steer.x*steer.x + steer.y*steer.y);
-	
+
 	float mag = sqrt(steer.x*steer.x + steer.y*steer.y);
     if (mag > 0) {
 		// Implement Reynolds: Steering = Desired - Velocity
@@ -184,7 +183,7 @@ ofxVec2f Boid::align(vector<Boid> &boids) {
     int count = 0;
     for (int i = 0 ; i < boids.size(); i++) {
 		Boid &other = boids[i];
-		
+
 		float d = ofDist(loc.x, loc.y, other.loc.x, other.loc.y);
 		if ((d > 0) && (d < neighbordist)) {
 			steer += (other.vel);
@@ -194,7 +193,7 @@ ofxVec2f Boid::align(vector<Boid> &boids) {
     if (count > 0) {
 		steer /= (float)count;
     }
-	
+
     // As long as the vector is greater than 0
 	float mag = sqrt(steer.x*steer.x + steer.y*steer.y);
     if (mag > 0) {
