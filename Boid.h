@@ -41,6 +41,9 @@ public:
 	float maxspeed;
     
     int seed;
+    
+    float separateAmt, alignAmt, cohesionAmt;
+    float driftFreq, driftAmt;
 };
 
 #endif

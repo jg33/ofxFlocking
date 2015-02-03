@@ -11,22 +11,37 @@
 #include "Boid.h"
 
 Boid::Boid() {
-    loc.set(ofRandomWidth(),ofRandomHeight());
+    loc.set(ofRandomWidth(),ofRandomHeight(), ofRandom(-50,50));
 	vel.set(0,0,0);
 	acc.set(0,0,0);
     size = 3.0;
     maxspeed = 0.5;
     maxforce = 0.01;
+    
+    separateAmt = 1.5;
+    alignAmt = 1;
+    cohesionAmt = 1;
+    
+    driftFreq = 0.01;
+    driftAmt = 0.001;
 }
 
 Boid::Boid(int x, int y) {
+    seed = ofRandom(1000);
+    
     loc.set(x,y,ofRandom(-50,50));
 	vel.set(0,0,0);
 	acc.set(0,0,0);
     size = 3.0;
     maxspeed = 0.5;
     maxforce = 0.01;
-    seed = ofRandom(1000);
+    
+    separateAmt = 1.5;
+    alignAmt = 1;
+    cohesionAmt = 1;
+    
+    driftFreq = 0.01;
+    driftAmt = 0.001;
 }
 
 // Method to update location
@@ -34,7 +49,7 @@ void Boid::update(vector<Boid> &boids) {
 
     
 	flock(boids);
-    drift(0.01,0.001);
+    drift(driftFreq,driftAmt);
 
     vel += acc;   // Update velocity
     vel.x = ofClamp(vel.x, -maxspeed, maxspeed);  // Limit speed
@@ -133,9 +148,9 @@ void Boid::flock(vector<Boid> &boids) {
 	ofVec3f coh = cohesion(boids);
 
 	// Arbitrarily weight these forces
-	sep *= 0.5;
-	ali *= 0.2;
-	coh *= 0.2;
+	sep *= separateAmt;
+	ali *= alignAmt;
+	coh *= cohesionAmt;
 
     acc += sep+ ali + coh;
     //acc += coh;

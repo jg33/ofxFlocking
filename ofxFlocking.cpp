@@ -4,7 +4,7 @@
  *
  *  Created by Jeffrey Crouse on 3/30/10.
  *  Copyright 2010 Eyebeam. All rights reserved.
- *  Modified by Takara Hokao
+ *  Modified by Takara Hokao & Jesse Garrison
  */
 
 #include "ofxFlocking.h"
@@ -37,6 +37,30 @@ void ofxFlocking::removeBoid(int x, int y, int radius) {
         if(boids[i].isHit(x, y, radius)) {
             boids.erase(boids.begin()+i);
         }
+    }
+}
+
+void ofxFlocking::setSeparate(float amt){
+    for (int i=0; i<boids.size(); i++) {
+        boids[i].separateAmt = amt;
+    }
+}
+
+void ofxFlocking::setAlign(float amt){
+    for (int i=0; i<boids.size(); i++) {
+        boids[i].separateAmt = amt;
+    }
+}
+
+void ofxFlocking::setCohesion(float amt){
+    for (int i=0; i<boids.size(); i++) {
+        boids[i].cohesionAmt = amt;
+    }
+}
+void ofxFlocking::setDrift(float freq, float amt){
+    for (int i=0; i<boids.size(); i++) {
+        boids[i].driftFreq = freq;
+        boids[i].driftAmt = amt;
     }
 }
 
