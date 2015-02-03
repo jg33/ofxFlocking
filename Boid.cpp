@@ -14,7 +14,7 @@ Boid::Boid() {
     loc.set(ofRandomWidth(),ofRandomHeight());
 	vel.set(0,0,0);
 	acc.set(0,0,0);
-    r = 3.0;
+    size = 3.0;
     maxspeed = 0.5;
     maxforce = 0.01;
 }
@@ -23,7 +23,7 @@ Boid::Boid(int x, int y) {
     loc.set(x,y,-100);
 	vel.set(0,0,0);
 	acc.set(0,0,0);
-    r = 1.0;
+    size = 1.0;
     maxspeed = 0.5;
     maxforce = 0.01;
 }
@@ -32,7 +32,7 @@ Boid::Boid(int x, int y) {
 void Boid::update(vector<Boid> &boids) {
 
     maxspeed=10;
-    r=3.0;
+    size=3.0;
 	flock(boids);
 
     vel += acc;   // Update velocity
@@ -42,11 +42,11 @@ void Boid::update(vector<Boid> &boids) {
     loc += vel;
     acc.set(0);  // Reset accelertion to 0 each cycle
     
-	if (loc.x < -r) loc.x = ofGetWidth()+r;
-    if (loc.y < -r) loc.y = ofGetHeight()+r;
+	if (loc.x < -size) loc.x = ofGetWidth()+size;
+    if (loc.y < -size) loc.y = ofGetHeight()+size;
 
-    if (loc.x > ofGetWidth()+r) loc.x = -r;
-    if (loc.y > ofGetHeight()+r) loc.y = -r;
+    if (loc.x > ofGetWidth()+size) loc.x = -size;
+    if (loc.y > ofGetHeight()+size) loc.y = -size;
     
 }
 
@@ -106,9 +106,9 @@ void Boid::draw() {
     
     
 	ofBeginShape();
-    ofVertex(0, -2,0);
-    ofVertex(-1, 2,0);
-    ofVertex(1, 2,0);
+    ofVertex(0, -2*size,0);
+    ofVertex(-size, 2*size,0);
+    ofVertex(size, 2*size,0);
     ofEndShape(true);
     
     

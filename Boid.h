@@ -35,7 +35,7 @@ public:
 	
 	ofVec3f loc,vel,acc;
     
-	float r;
+	float size;
 	float maxforce;
 	float maxspeed;
 };
