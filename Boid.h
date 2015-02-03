@@ -4,7 +4,7 @@
  *
  *  Created by Jeffrey Crouse on 3/29/10.
  *  Copyright 2010 Eyebeam. All rights reserved.
- *  Updated by Takara Hokao
+ *  Updated by Takara Hokao & Jesse Garrison
  */
 
 #ifndef BOID_H
@@ -23,6 +23,7 @@ public:
     void seek(ofVec3f target);
     void avoid(ofVec3f target);
     void arrive(ofVec3f target);
+    void drift(float freq, float amp);
 	
     void flock(vector<Boid> &boids);
     bool isHit(int x,int y, int radius);
@@ -38,6 +39,8 @@ public:
 	float size;
 	float maxforce;
 	float maxspeed;
+    
+    int seed;
 };
 
 #endif

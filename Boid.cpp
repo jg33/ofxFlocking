@@ -4,7 +4,7 @@
  *
  *  Created by Jeffrey Crouse on 3/29/10.
  *  Copyright 2010 Eyebeam. All rights reserved.
- *  Updated by Takara Hokao
+ *  Updated by Takara Hokao & Jesse Garrison
  *
  */
 
@@ -20,20 +20,21 @@ Boid::Boid() {
 }
 
 Boid::Boid(int x, int y) {
-    loc.set(x,y,-100);
+    loc.set(x,y,ofRandom(-50,50));
 	vel.set(0,0,0);
 	acc.set(0,0,0);
-    size = 1.0;
+    size = 3.0;
     maxspeed = 0.5;
     maxforce = 0.01;
+    seed = ofRandom(1000);
 }
 
 // Method to update location
 void Boid::update(vector<Boid> &boids) {
 
-    maxspeed=10;
-    size=3.0;
+    
 	flock(boids);
+    drift(0.01,0.001);
 
     vel += acc;   // Update velocity
     vel.x = ofClamp(vel.x, -maxspeed, maxspeed);  // Limit speed
@@ -60,6 +61,15 @@ void Boid::avoid(ofVec3f target) {
 
 void Boid::arrive(ofVec3f target) {
     acc += steer(target, true);
+}
+
+void Boid::drift(float freq, float amp){
+    ofVec3f noise;
+    noise.x= ofSignedNoise((seed+ofGetFrameNum())*freq)*amp;
+    noise.y= ofSignedNoise((seed+ofGetFrameNum())*freq*0.8)*amp;
+    noise.z= ofSignedNoise((seed+ofGetFrameNum())*freq*0.9)*amp;
+
+    acc += noise;
 }
 
 // A method that calculates a steering vector towards a target
