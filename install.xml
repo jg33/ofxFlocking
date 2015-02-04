@@ -1,0 +1,31 @@
+<install>
+	<name>ofxFlocking</name>
+    <version>0.1</version>
+    <author><[CDATA[Jesse Garrison <jesse@takethefort.com> ]]></author>
+   
+    <code_url>https://github.com/jg33/ofxFlocking</code_url>
+    
+    <download_url>https://github.com/jg33/ofxFlocking</download_url>
+   
+    <description><![CDATA[
+         An OpenFrameworks implementation of Boids ]]></description>
+    
+	<add>
+		
+		<!-- 	=====================================================================	-->
+		<!--	========================== add per project using this addon =========	-->
+		<!-- 	=====================================================================	-->
+	
+		<src>
+			<folder name="addons/ofxAnimatable/src">
+				<file>../../../addons/ofxFlocking/src/ofxFlocking.cpp</file>
+				<file>../../../addons/ofxFlocking/src/ofxFlocking.h</file>
+				<file>../../../addons/ofxFlocking/src/Boid.cpp</file>
+				<file>../../../addons/ofxFlocking/src/Boid.h</file>
+
+			</folder>
+		</src>
+		
+	</add>    
+    
+</install>

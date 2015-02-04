@@ -44,6 +44,8 @@ public:
     
     float separateAmt, alignAmt, cohesionAmt;
     float driftFreq, driftAmt;
+    
+    //TODO: life
 };
 
 #endif
